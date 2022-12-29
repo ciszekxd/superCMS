@@ -1,19 +1,17 @@
 <script lang="ts">
     import { pageData } from "../pageSchema";
-    import SettingWindow from "./SettingWindow.svelte";
-    import PlaceHolderContent from "./PlaceHolderContent.svelte";
-    import Col from "./Col.svelte";
+    import GridElement from "./GridElement.svelte";
 
     export let rowNumber : number; 
 
     let columnsInRow : Array<any>; 
+
+    let col : number = 0;
     
     pageData.subscribe(pageData => {
         columnsInRow = pageData.schema[rowNumber];
 
     });
-    //console.log("columnsInRow:", pageData);
-    
 
     let isVisible : Array<boolean> = init();
 
@@ -23,27 +21,14 @@
         return table;    
     }
 
-    function setVisibleTure(rowElement: number){
-        isVisible[rowElement] = true;
-        isVisible = isVisible;
-        
-    }
-
-    function setVisibleFasle(rowElement: number){
-        isVisible[rowElement] = false;
-        isVisible = isVisible;
-        
+    function dragEnter(){
+        console.log("entered: col: " + col + ", row: " + rowNumber );
     }
 
 </script>
     
 <style>
 
-    .row-element{
-        position: relative;
-        border-width: 5px;
-        width: 100%;
-    }
     
     .row{
         display: flex;
@@ -53,12 +38,7 @@
 
 <div class="row">
     {#each columnsInRow as columnData, i} 
-        
         <!-- svelte-ignore a11y-mouse-events-have-key-events -->
-        <div class="row-element" on:mouseover={() => setVisibleTure(i)} on:mouseleave={() => setVisibleFasle(i)}>
-            <PlaceHolderContent iterator={i} elementData={columnData}/>
-            <div>{columnData.name}</div>
-            <SettingWindow isVisible={isVisible[i]} col={i} row={rowNumber}/>
-        </div>
+        <GridElement col={i} row={rowNumber} elementData={columnData}/>
     {/each}
 </div>

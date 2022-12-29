@@ -11,3 +11,6 @@ export type elementContent = {
     name: string,
     id: number
 }
+
+export const lastEnteredCol = writable(0);
+export const lastEnteredRow = writable(0);

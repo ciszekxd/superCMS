@@ -1,12 +1,10 @@
 
 <script lang="ts">
-    import { page } from "$app/stores";
     import { pageData } from "../pageSchema";
 
     export let isVisible : boolean = false;
-
-    export let row = 0;
-    export let col = 0;
+    export let row : number = 0;
+    export let col : number = 0;
 
     let schema : Array<any>; 
     
@@ -14,8 +12,8 @@
         schema = pageData.schema
     })
 
-    function addElement(){
-        schema[row].splice(col+1, 0, {name: "new element", id: 123})
+    function addRowElement(){
+        schema[row].splice(col+1, 0, {name: "new element", id: 123});
 
         pageData.update(pageData => {
             pageData.schema[row] = schema[row];
@@ -23,6 +21,13 @@
         });
         
         console.log(schema[row])
+    }
+
+    function addRow(){
+        pageData.update(pageData => {
+            pageData.schema.splice(row+1, 0, [{name: "new row", id: 456}]);
+            return pageData;
+        });
     }
 </script>
 
@@ -41,6 +46,7 @@
 
 {#if isVisible}
     <div class="settings">
-        <button on:click={() => addElement()}>add element to the row</button>
+        <button on:click={() => addRowElement()}>add element to the row</button>
+        <button on:click={() => addRow()}>add new row</button>
     </div>
 {/if}
